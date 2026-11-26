@@ -19,7 +19,7 @@ list(FILTER app_sources EXCLUDE REGEX "vendor/ed25519/.*\\.c")
 idf_build_get_property(idf_target IDF_TARGET)
 if(idf_target STREQUAL "esp32s2")
     message(STATUS "Excluding BLE sources for ${idf_target} target (no local BLE hardware)")
-    list(FILTER app_sources EXCLUDE REGEX "attacks/ble/.*\\.c")
+    list(FILTER app_sources EXCLUDE REGEX "features/ble/.*\\.c")
     list(FILTER app_sources EXCLUDE REGEX "scans/ble/.*\\.c")
     list(FILTER app_sources EXCLUDE REGEX "managers/ble_manager\\.c")
 endif()
@@ -99,15 +99,24 @@ endif()
 
 set(required_components bt nvs_flash driver esp_driver_gpio esp_driver_i2c esp_driver_uart esp_driver_rmt esp_driver_i2s esp_driver_usb_serial_jtag esp_http_server mdns cjson esp_http_client mbedtls fatfs sdmmc wpa_supplicant lvgl lvgl_esp32_drivers freertos esp_lcd esp_mm esp_adc esp_timer esp_app_format io_manager esp_eth espcoredump esp-tls app_update esp_https_ota spi_flash bootloader_support)
 
+# The sinkhole's optional HTTPS interception server needs the TLS capable
+# httpd.  The component is listed unconditionally because the component
+# requirements graph is built by a sub-process that re-runs this CMakeLists
+# without sdkconfig values, so a config-gated REQUIRES append never reaches
+# the link graph (see the esp_hid comment below).  Listing it costs nothing
+# when the feature is off: nothing references the library, so the linker
+# drops it.
+list(APPEND required_components esp_https_server)
+
 # The P4 hosts Wi-Fi and Bluetooth through the onboard C6. The P4 runs the
 # NimBLE host while ESP-Hosted supplies the C6 controller over VHCI.
 if(idf_target STREQUAL "esp32p4")
     list(REMOVE_ITEM app_sources
          "${CMAKE_SOURCE_DIR}/main/managers/espnow_manager.c"
-         "${CMAKE_SOURCE_DIR}/main/attacks/wifi/gtk_abuse.c")
+         "${CMAKE_SOURCE_DIR}/main/features/wifi/gtk_abuse.c")
     list(APPEND app_sources
          "${CMAKE_SOURCE_DIR}/main/managers/espnow_manager_stub.c"
-         "${CMAKE_SOURCE_DIR}/main/attacks/wifi/gtk_abuse_stub.c")
+         "${CMAKE_SOURCE_DIR}/main/features/wifi/gtk_abuse_stub.c")
     # Keep these target-gated rather than profile-gated. ESP-IDF may rebuild
     # the component requirements graph without sdkconfig values available.
     list(APPEND required_components esp_wifi esp_hosted esp_wifi_remote esp_lcd_ek79007 esp_lcd_touch_gt911 esp_mm esp_driver_ppa esp_video)

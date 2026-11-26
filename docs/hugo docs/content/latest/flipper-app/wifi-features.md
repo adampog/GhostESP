@@ -36,7 +36,7 @@ keywords: ["wifi", "scanning", "capture", "attacks", "beacon spam"]
   - Random mode (random SSIDs)
   - Rickroll mode (entertainment)
   - Custom SSID mode
-- **Deauthentication Attacks**: Disconnect devices from networks
+- **Reconnect Test**: Disconnect devices from networks
 - **EAPOL Logoff Attacks**: Force re-authentication
 - **SAE Handshake Flood**: WPA3 attack method
 - **Karma Rogue AP**: Create fake access points with custom SSIDs
@@ -61,9 +61,9 @@ keywords: ["wifi", "scanning", "capture", "attacks", "beacon spam"]
 
 1. Create your HTML file (max 2048 bytes for app upload)
 2. Navigate to **Wi-Fi** → **Evil Portal & Network** → **Set Evil Portal HTML**
-3. Select upload method
-4. Enter HTML content or select file
-5. Portal will use custom HTML on next start
+3. Select the HTML file
+4. The portal will use the uploaded HTML on the next start
+5. Open **Evil Portal & Network** → **Start Flipper Portal**, then enter the SSID (and optional password)
 
 ## Beacon List Management
 

@@ -42,6 +42,7 @@ void handle_beaconclear(int argc, char **argv);
 void handle_beaconshow(int argc, char **argv);
 void handle_beaconspamlist(int argc, char **argv);
 void handle_stop_spam(int argc, char **argv);
+void handle_reconnect_cmd(int argc, char **argv);
 void handle_stop_deauth(int argc, char **argv);
 void handle_sae_flood_cmd(int argc, char **argv);
 void handle_stop_sae_flood_cmd(int argc, char **argv);
@@ -125,6 +126,7 @@ void stop_portal(int argc, char **argv);
 void handle_listportals(int argc, char **argv);
 void handle_evilportal(int argc, char **argv);
 void handle_sinkhole_cmd(int argc, char **argv);
+void handle_certscan_cmd(int argc, char **argv);
 
 // GPS commands
 void handle_gps_info(int argc, char **argv);
